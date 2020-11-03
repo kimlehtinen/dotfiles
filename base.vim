@@ -16,18 +16,75 @@ Plug 'mkitt/tabline.vim'
 Plug 'ryanoasis/vim-devicons'
 "Color:
 Plug 'morhetz/gruvbox'
+"Golang:
+Plug 'fatih/vim-go'
+"Autocomplete:
+Plug 'ncm2/ncm2'
+Plug 'ncm2/ncm2-go'
 Plug 'roxma/nvim-yarp'
 Plug 'roxma/vim-hug-neovim-rpc'
+Plug 'stamblerre/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
 "Snippets:
 Plug 'ncm2/ncm2-ultisnips'
 Plug 'SirVer/ultisnips'
 "Git:
 Plug 'tpope/vim-fugitive'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 " Stable version of coc
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Keeping up to date with master
 Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 call plug#end()
+
+set encoding=UTF-8
+
+set statusline=%F%m%r%h%w%=(%{&ff}/%Y)\ (line\ %l\/%L,\ col\ %c)\
+
+" vim-airline
+let g:nd_airline = 1
+let g:airline_theme = 'powerlineish'
+let g:airline#extensions#syntastic#enabled = 1
+let g:airline#extensions#branch#enabled = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tagbar#enabled = 1
+let g:airline_skip_empty_sections = 1
+let g:airline_powerline_fonts = 1
+
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+
+if !exists('g:airline_powerline_fonts')
+  let g:airline#extensions#tabline#left_sep = ' '
+  let g:airline#extensions#tabline#left_alt_sep = '|'
+  let g:airline_left_sep          = '▶'
+  let g:airline_left_alt_sep      = '»'
+  let g:airline_right_sep         = '◀'
+  let g:airline_right_alt_sep     = '«'
+  let g:airline#extensions#branch#prefix     = '⤴' "➔, ➥, ⎇
+  let g:airline#extensions#readonly#symbol   = '⊘'
+  let g:airline#extensions#linecolumn#prefix = '¶'
+  let g:airline#extensions#paste#symbol      = 'ρ'
+  let g:airline_symbols.linenr    = '␊'
+  let g:airline_symbols.branch    = '⎇'
+  let g:airline_symbols.paste     = 'ρ'
+  let g:airline_symbols.paste     = 'Þ'
+  let g:airline_symbols.paste     = '∥'
+  let g:airline_symbols.whitespace = 'Ξ'
+else
+  let g:airline#extensions#tabline#left_sep = ''
+  let g:airline#extensions#tabline#left_alt_sep = ''
+
+  " powerline symbols
+  let g:airline_left_sep = ''
+  let g:airline_left_alt_sep = ''
+  let g:airline_right_sep = ''
+  let g:airline_right_alt_sep = ''
+  let g:airline_symbols.branch = ''
+  let g:airline_symbols.readonly = ''
+  let g:airline_symbols.linenr = ''
+endif
 
 "COPY/PASTE:
 "-----------
@@ -47,6 +104,35 @@ vnoremap > >gv
 "COLOR:
 "------
 colorscheme gruvbox
+
+"GO AUTO IMPORT:
+"------------
+let g:go_fmt_command = "goimports"
+
+"AUTOCOMPLETE:
+"-------------
+augroup ncm2
+  au!
+  autocmd BufEnter * call ncm2#enable_for_buffer()
+  set completeopt=noinsert,menuone,noselect
+  au User Ncm2PopupOpen set completeopt=noinsert,menuone,noselect
+  au User Ncm2PopupClose set completeopt=menuone
+augroup END
+"Press Enter to select item in autocomplete popup
+inoremap <silent> <expr> <CR> (pumvisible() ? ncm2_ultisnips#expand_or("\<CR>", 'n') : "\<CR>")
+"Cycle through completion entries with tab/shift+tab
+inoremap <expr> <TAB> pumvisible() ? "\<c-n>" : "\<TAB>"
+inoremap <expr> <s-tab> pumvisible() ? "\<c-p>" : "\<TAB>"
+"Allow getting out of pop with Down/Up arrow keys
+inoremap <expr> <down> pumvisible() ? "\<C-E>" : "\<down>"
+inoremap <expr> <up> pumvisible() ? "\<C-E>" : "\<up>"
+
+"SNIPPETS:
+"---------
+"Change default expand since TAB is used to cycle options
+let g:UltiSnipsExpandTrigger="<c-j>"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
 
 "FILE SEARCH:

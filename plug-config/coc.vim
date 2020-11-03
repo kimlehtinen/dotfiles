@@ -4,7 +4,6 @@ let g:coc_global_extensions = [
     \ 'coc-sh',
     \ 'coc-java-debug',
     \ 'coc-java',
-    \ 'coc-go',
     \ 'coc-clangd',
     \ 'coc-lists',
     \ 'coc-emmet',
