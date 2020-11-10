@@ -146,6 +146,8 @@ let $FZF_DEFAULT_COMMAND = "find -L"
 "-------------
 "allows NERDTree to open/close by typing 'n' then 't'
 map nt :NERDTreeTabsToggle<CR>
+"focus on NERDTREE
+map nf :NERDTreeFocus<CR>
 "Start NERDtree when dir is selected (e.g. "vim .") and start NERDTreeTabs
 let g:nerdtree_tabs_open_on_console_startup=2
 "Add a close button in the upper right for tabs
